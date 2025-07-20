@@ -1,13 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookmarkIcon as OutlineBookmarkIcon } from "@heroicons/react/24/outline";
-import { BookmarkIcon as FilledBookmarkIcon } from "@heroicons/react/24/solid";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleFavorite } from "../../store/slices/favoritesSlice";
-import { RootState } from "@/store";
+import { Bars3Icon } from "@heroicons/react/24/outline";
+import React from "react";
 
-interface ContentCardProps {
+interface ContentCardProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string;
   title: string;
   imageUrl: string;
@@ -16,78 +13,74 @@ interface ContentCardProps {
   source: string;
   onActionClick?: () => void;
   actionText?: string;
+  dragListeners?: any; // from dnd-kit
 }
 
-export const ContentCard = ({
-  id,
-  title,
-  imageUrl,
-  description,
-  actionUrl,
-  source,
-  onActionClick,
-  actionText = "Read More",
-}: ContentCardProps) => {
-  const dispatch = useDispatch();
+export const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
+  (
+    {
+      id,
+      title,
+      imageUrl,
+      description,
+      actionUrl,
+      source,
+      onActionClick,
+      actionText = "Read More",
+      style,
+      dragListeners,
+      ...rest
+    },
+    ref
+  ) => {
+    const { onDrag, onDragEnd, ...cleanedRest } = rest;
 
-  const isFavorite = useSelector((state: RootState) =>
-    state.favorites.items.some((item) => item.id === id)
-  );
+    return (
+      <motion.div
+        ref={ref}
+        style={style}
+        whileHover={{ scale: 1.02 }}
+        className="relative overflow-hidden transition duration-300 bg-white rounded-lg shadow-md dark:bg-gray-800"
+        {...cleanedRest}
+      >
+        {/* Drag Handle */}
+        {dragListeners && (
+          <div
+            {...dragListeners}
+            className="absolute z-20 text-gray-400 top-2 left-2 hover:text-gray-600 cursor-grab active:cursor-grabbing"
+            title="Drag to reorder"
+          >
+            <Bars3Icon className="w-5 h-5" />
+          </div>
+        )}
 
-  const handleFavorite = () => {
-    dispatch(
-      toggleFavorite({
-        id,
-        title,
-        imageUrl,
-        description,
-        actionUrl,
-        source,
-      })
-    );
-  };
+        {/* Content Image */}
+        <img
+          src={imageUrl || "null"}
+          alt={title}
+          className="object-cover w-full h-40"
+        />
 
-  return (
-    <motion.div
-      whileHover={{ scale: 1.02 }}
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition duration-300"
-    >
-      <img
-        src={imageUrl || "null"}
-        alt={title}
-        className="w-full h-40 object-cover"
-      />
-      <div className="p-4 space-y-2">
-        <div className="flex justify-between items-start">
+        {/* Content Body */}
+        <div className="p-4 space-y-2">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {title}
           </h2>
-          <button
-            onClick={handleFavorite}
-            className={`hover:text-red-500 ${
-              isFavorite ? "text-red-500" : "text-gray-500 dark:text-gray-300"
-            }`}
-            title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-          >
-            {isFavorite ? (
-              <FilledBookmarkIcon className="h-5 w-5" />
-            ) : (
-              <OutlineBookmarkIcon className="h-5 w-5" />
-            )}
-          </button>
+          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
+            {description}
+          </p>
+          {onActionClick && (
+            <button
+              onClick={onActionClick}
+              className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
+            >
+              {actionText}
+            </button>
+          )}
         </div>
-        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
-          {description}
-        </p>
-        {onActionClick && (
-          <button
-            onClick={onActionClick}
-            className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            {actionText}
-          </button>
-        )}
-      </div>
-    </motion.div>
-  );
-};
+      </motion.div>
+    );
+  }
+);
+
+ContentCard.displayName = "ContentCard";
