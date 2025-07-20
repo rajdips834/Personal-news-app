@@ -1,0 +1,13 @@
+# Ignore all .log files
+*.log
+
+# Ignore env and build artifacts
+.env.local
+.env.development.local
+.env.test.local
+build/
+dist/
+node_modules/
+.next/
+.vscode/
+

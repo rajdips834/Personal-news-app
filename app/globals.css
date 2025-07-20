@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+/* CSS custom properties for light and dark mode */
+:root {
+  --bg: #ffffff;
+  --text: #1f2937;
+  --card: #f9fafb;
+}
+
+.dark {
+  --bg: #1f2937;
+  --text: #f9fafb;
+  --card: #111827;
+}
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Optional: Apply to cards and utility classes */
+.card {
+  background-color: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hoverable {
+  transition: background-color 0.3s ease;
+}
+
+.hoverable:hover {
+  background-color: var(--hover-bg);
+}
