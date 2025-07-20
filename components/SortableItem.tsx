@@ -14,8 +14,14 @@ import { toggleFavorite } from "@/store/slices/favoritesSlice";
 import { RootState } from "@/store";
 
 export const SortableItem = ({ item }: { item: FeedItem }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.id });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -35,19 +41,21 @@ export const SortableItem = ({ item }: { item: FeedItem }) => {
   return (
     <div className="relative">
       {/* Top-right Favorite Button */}
-      <button
-        className={`absolute z-30 p-1 rounded-md top-2 right-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
-          isFavorite ? "text-red-500" : "text-gray-500 dark:text-gray-300"
-        }`}
-        onClick={handleFavorite}
-        title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-      >
-        {isFavorite ? (
-          <FilledBookmarkIcon className="w-5 h-5" />
-        ) : (
-          <OutlineBookmarkIcon className="w-5 h-5" />
-        )}
-      </button>
+      {!isDragging && (
+        <button
+          className={`absolute z-30 p-1 rounded-md top-2 right-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+            isFavorite ? "text-red-500" : "text-gray-500 dark:text-gray-300"
+          }`}
+          onClick={handleFavorite}
+          title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
+        >
+          {isFavorite ? (
+            <FilledBookmarkIcon className="w-5 h-5" />
+          ) : (
+            <OutlineBookmarkIcon className="w-5 h-5" />
+          )}
+        </button>
+      )}
 
       {/* Draggable Card */}
       <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
