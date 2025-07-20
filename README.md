@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 Personalized Content Dashboard
 
-## Getting Started
+A customizable content dashboard that aggregates personalized news, movie recommendations, and trending posts. Built with **Next.js**, **TypeScript**, **Tailwind CSS**, **Redux Toolkit**, **NextAuth.js**, and **react-i18next**, this project supports multi-language UI, dark mode, route protection, real-time updates, and content bookmarking.
 
-First, run the development server:
+---
+
+## 🚀 Features
+
+### 🌐 Core Functionality
+
+- 📰 **Content Feed**: Personalized and categorized content (News, Movies, Posts)
+- 🔍 **Search & Filter**: Find and filter content with ease
+- 📌 **Favorites**: Bookmark and view favorite content
+- 📊 **Trending Section**: View what’s hot across categories
+
+### 🛠 User Features
+
+- 🙋 **User Profile**: Basic customizable user profile
+- ✅ **Protected Routes**: Authenticated-only access
+- 💾 **Session Persistence**: Via `redux-persist` and NextAuth session
+- 🤌 **Dragable UI**: Via `React DnD
+
+---
+
+## 🧱 Tech Stack
+
+| Technology        | Description                                     |
+| ----------------- | ----------------------------------------------- |
+| **Next.js**       | React Framework for SSR and routing             |
+| **TypeScript**    | Type-safe development                           |
+| **Tailwind CSS**  | Utility-first styling framework                 |
+| **Redux Toolkit** | Global state management                         |
+| **redux-persist** | Store session and state across reloads          |
+| **NextAuth.js**   | Authentication (mock/credentials-based)         |
+| **react-i18next** | Multi-language translation support              |
+| **Framer Motion** | Smooth component animations                     |
+| **Heroicons**     | Modern icon set used for actions like bookmarks |
+
+---
+
+## 🧑‍💻 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/rajdips834/Personal-news-app
+cd personalized-content-dashboard
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+# or
+yarn install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env.local` file at the root:
+
+```env
+NEXT_PUBLIC_NEWS_API_KEY=your_key
+NEXT_PUBLIC_TMDB_API_KEY=your_key
+
+
+```
+
+### 4. Start the Development Server
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Project Structure
 
-## Learn More
+```
+components/        → UI components (cards, tabs, navbar, etc.)
+store/             → Redux slices and configuration
+pages/api/auth/    → NextAuth API routes
+app/               → App Router-based structure
+types/             → TypeScript interfaces and types
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🧩 Future Enhancements
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- OAuth providers (Google, GitHub)
+- Real-time updates using WebSockets or SSE
+- Richer profile customization
+- Saved filters and feed personalization
+- Notification center
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🧑 Author
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Made with ❤️ by **Rajdip Sinha**
+
+- GitHub: [@rajdipsinha](https://github.com/rajdipsinha)
+- Portfolio: [rajdipsinha.dev](https://rajdipsinha.dev)
+
+---
