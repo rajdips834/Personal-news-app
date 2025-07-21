@@ -12,10 +12,8 @@ import {
   arrayMove,
   SortableContext,
   rectSortingStrategy,
-  useSortable,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/store";
 import {
@@ -40,6 +38,7 @@ export const FeedContent = () => {
   );
 
   const [items, setItems] = useState<FeedItem[]>([]);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setItems(feed);
@@ -54,6 +53,28 @@ export const FeedContent = () => {
       }) as any
     );
   }, [page, debouncedQuery, sourceFilter, dispatch]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting && hasMore && !loading) {
+          dispatch(incrementPage());
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [hasMore, loading, dispatch]);
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -79,7 +100,7 @@ export const FeedContent = () => {
           items={items.map((item) => item.id)}
           strategy={rectSortingStrategy}
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((item) => (
               <SortableItem key={item.id} item={item} />
             ))}
@@ -87,14 +108,17 @@ export const FeedContent = () => {
         </SortableContext>
       </DndContext>
 
+      {/* Infinite Scroll Sentinel */}
+      <div ref={loaderRef} className="h-10" />
+
       {loading && (
-        <div className="col-span-full text-center py-4 text-gray-500">
+        <div className="py-4 text-center text-gray-500 col-span-full">
           Loading more...
         </div>
       )}
 
       {debouncedQuery && feed.length === 0 && !loading && (
-        <div className="col-span-full text-center py-4 text-gray-400">
+        <div className="py-4 text-center text-gray-400 col-span-full">
           No results found.
         </div>
       )}
