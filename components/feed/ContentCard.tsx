@@ -13,9 +13,7 @@ interface ContentCardProps extends React.HTMLAttributes<HTMLDivElement> {
   source: string;
   onActionClick?: () => void;
   actionText?: string;
-  dragListeners?: {
-    onPointerDown: (event: React.PointerEvent) => void;
-  };
+  dragListeners?: any;
   style?: React.CSSProperties;
   className?: string;
 }
