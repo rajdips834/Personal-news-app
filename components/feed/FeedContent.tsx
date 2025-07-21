@@ -101,8 +101,8 @@ export const FeedContent = () => {
           strategy={rectSortingStrategy}
         >
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {items.map((item) => (
-              <SortableItem key={item.id} item={item} />
+            {items.map((item, index) => (
+              <SortableItem key={index} item={item} />
             ))}
           </div>
         </SortableContext>
