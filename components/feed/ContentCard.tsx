@@ -13,7 +13,11 @@ interface ContentCardProps extends React.HTMLAttributes<HTMLDivElement> {
   source: string;
   onActionClick?: () => void;
   actionText?: string;
-  dragListeners?: any; // from dnd-kit
+  dragListeners?: {
+    onPointerDown: (event: React.PointerEvent) => void;
+  };
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 export const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
@@ -27,21 +31,22 @@ export const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>(
       source,
       onActionClick,
       actionText = "Read More",
-      style,
       dragListeners,
+      style,
+      className = "",
       ...rest
     },
     ref
   ) => {
-    const { onDrag, onDragEnd, ...cleanedRest } = rest;
-
     return (
       <motion.div
         ref={ref}
         style={style}
         whileHover={{ scale: 1.02 }}
-        className="relative overflow-hidden transition duration-300 bg-white rounded-lg shadow-md dark:bg-gray-800"
-        {...cleanedRest}
+        className={`relative overflow-hidden transition duration-300 bg-white rounded-lg shadow-md dark:bg-gray-800 ${className}`}
+        {...Object.fromEntries(
+          Object.entries(rest).filter(([key]) => !key.startsWith("onDrag"))
+        )}
       >
         {/* Drag Handle */}
         {dragListeners && (
